@@ -1,0 +1,75 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Mutation {
+  createPost(data: PostCreateInput!): PostEntity!
+  deletePost(id: Float!): PostEntity!
+  signin(data: SignInInput!): Token!
+  signupUser(data: UserCreateInput!): UserEntity!
+  updatePost(data: PostUpdateInput!, id: Float!): PostEntity!
+}
+
+input PostCreateInput {
+  content: String!
+  title: String!
+  userId: Float!
+}
+
+type PostEntity {
+  content: String!
+  createdAt: DateTime!
+  id: Int!
+  status: Int!
+  title: String!
+  updatedAt: DateTime!
+  user: UserEntity!
+  userId: Int!
+}
+
+input PostUpdateInput {
+  content: String!
+  title: String!
+}
+
+type Query {
+  allPosts: [PostEntity!]!
+  allUsers: [UserEntity!]!
+  post(id: Float!): PostEntity
+  user(id: Float!): UserEntity
+}
+
+input SignInInput {
+  email: String!
+  password: String!
+}
+
+enum Status {
+  DELETED
+  NORMAL
+}
+
+type Token {
+  access_token: String!
+}
+
+input UserCreateInput {
+  email: String!
+  name: String!
+  password: String!
+}
+
+type UserEntity {
+  createdAt: DateTime!
+  email: String!
+  id: Int!
+  name: String!
+  posts: [PostEntity!]!
+  status: Status!
+  updatedAt: DateTime!
+}
