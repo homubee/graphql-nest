@@ -12,6 +12,8 @@ import { PostEntity } from './post.entity';
 import { PostCreateInput } from './inputs/post-create.input';
 import { UserEntity } from 'src/user/user.entity';
 import { PostUpdateInput } from './inputs/post-update.input';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Resolver(PostEntity)
 export class PostResolver {
@@ -21,11 +23,13 @@ export class PostResolver {
   ) {}
 
   @Mutation((returns) => PostEntity)
+  @UseGuards(JwtAuthGuard)
   async createPost(@Args('data') data: PostCreateInput): Promise<PostEntity> {
     return await this.postService.createPost(data);
   }
 
   @Mutation((returns) => PostEntity)
+  @UseGuards(JwtAuthGuard)
   async updatePost(
     @Args('id') id: number,
     @Args('data') data: PostUpdateInput,
@@ -34,11 +38,13 @@ export class PostResolver {
   }
 
   @Mutation((returns) => PostEntity)
+  @UseGuards(JwtAuthGuard)
   async deletePost(@Args('id') id: number): Promise<PostEntity> {
     return await this.postService.deletePost(id);
   }
 
   @Query((returns) => [PostEntity])
+  @UseGuards(JwtAuthGuard)
   async allPosts() {
     return await this.postService.findAllPosts();
   }
