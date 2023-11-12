@@ -1,13 +1,13 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, Int } from '@nestjs/graphql';
 
 @InputType()
 export class PostCreateInput {
-  @Field()
+  @Field((type) => Int, { description: '유저 id' })
   userId: number;
 
-  @Field()
+  @Field({ description: '제목' })
   title: string;
 
-  @Field()
+  @Field({ description: '내용' })
   content: string;
 }

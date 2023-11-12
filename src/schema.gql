@@ -8,44 +8,86 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Mutation {
+  """게시글 등록"""
   createPost(data: PostCreateInput!): PostEntity!
-  deletePost(id: Float!): PostEntity!
+
+  """게시글 삭제"""
+  deletePost(id: Int!): PostEntity!
+
+  """로그인"""
   signin(data: SignInInput!): Token!
+
+  """회원가입"""
   signupUser(data: UserCreateInput!): UserEntity!
-  updatePost(data: PostUpdateInput!, id: Float!): PostEntity!
+
+  """게시글 수정"""
+  updatePost(data: PostUpdateInput!, id: Int!): PostEntity!
 }
 
 input PostCreateInput {
+  """내용"""
   content: String!
+
+  """제목"""
   title: String!
-  userId: Float!
+
+  """유저 id"""
+  userId: Int!
 }
 
 type PostEntity {
+  """내용"""
   content: String!
+
+  """생성일"""
   createdAt: DateTime!
+
+  """id"""
   id: Int!
-  status: Int!
+
+  """상태"""
+  status: Status!
+
+  """제목"""
   title: String!
+
+  """수정일"""
   updatedAt: DateTime!
+
+  """작성자"""
   user: UserEntity!
+
+  """유저 id"""
   userId: Int!
 }
 
 input PostUpdateInput {
+  """내용"""
   content: String!
+
+  """제목"""
   title: String!
 }
 
 type Query {
+  """게시글 전체 조회"""
   allPosts: [PostEntity!]!
+
+  """유저 전체 조회"""
   allUsers: [UserEntity!]!
-  post(id: Float!): PostEntity
-  user(id: Float!): UserEntity
+
+  """게시글 단건 조회"""
+  post(id: Int!): PostEntity
+
+  """유저 단건 조회"""
+  user(id: Int!): UserEntity
 }
 
 input SignInInput {
+  """이메일"""
   email: String!
+
+  """비밀번호"""
   password: String!
 }
 
@@ -59,17 +101,35 @@ type Token {
 }
 
 input UserCreateInput {
+  """이메일"""
   email: String!
+
+  """이름"""
   name: String!
+
+  """비밀번호"""
   password: String!
 }
 
 type UserEntity {
+  """생성일"""
   createdAt: DateTime!
+
+  """이메일"""
   email: String!
+
+  """id"""
   id: Int!
+
+  """이름"""
   name: String!
+
+  """작성한 게시글 목록"""
   posts: [PostEntity!]!
+
+  """상태"""
   status: Status!
+
+  """수정일"""
   updatedAt: DateTime!
 }

@@ -5,14 +5,14 @@ import { IsEmail } from 'class-validator';
 
 @InputType()
 export class UserCreateInput {
-  @Field()
+  @Field({ description: '이메일' })
   @IsEmail()
   email: string;
 
-  @Field()
+  @Field({ description: '이름' })
   name: string;
 
-  @Field()
+  @Field({ description: '비밀번호' })
   @Transform(({ value }) => bcrypt.hashSync(value, 10))
   password: string;
 }

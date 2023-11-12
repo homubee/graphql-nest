@@ -3,10 +3,10 @@ import { IsEmail } from 'class-validator';
 
 @InputType()
 export class SignInInput {
-  @Field()
+  @Field({ description: '이메일' })
   @IsEmail()
   email: string;
 
-  @Field()
+  @Field({ description: '비밀번호' })
   password: string;
 }

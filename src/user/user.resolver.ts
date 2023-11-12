@@ -1,5 +1,6 @@
 import {
   Args,
+  Int,
   Mutation,
   Query,
   ResolveField,
@@ -19,18 +20,25 @@ export class UserResolver {
     private readonly postService: PostService,
   ) {}
 
-  @Mutation((returns) => UserEntity)
+  @Mutation((returns) => UserEntity, {
+    description: '회원가입',
+  })
   async signupUser(@Args('data') data: UserCreateInput): Promise<UserEntity> {
     return await this.userService.createUser(data);
   }
 
-  @Query((returns) => [UserEntity])
+  @Query((returns) => [UserEntity], {
+    description: '유저 전체 조회',
+  })
   async allUsers() {
     return this.userService.findAllUsers();
   }
 
-  @Query((returns) => UserEntity, { nullable: true })
-  async user(@Args('id') id: number) {
+  @Query((returns) => UserEntity, {
+    description: '유저 단건 조회',
+    nullable: true,
+  })
+  async user(@Args('id', { type: () => Int }) id: number) {
     return this.userService.findUserById(id);
   }
 

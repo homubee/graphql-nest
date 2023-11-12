@@ -1,10 +1,11 @@
 import {
   Args,
+  Int,
   Mutation,
+  Parent,
   Query,
   ResolveField,
   Resolver,
-  Root,
 } from '@nestjs/graphql';
 import { PostService } from './post.service';
 import { UserService } from 'src/user/user.service';
@@ -22,40 +23,53 @@ export class PostResolver {
     private readonly userService: UserService,
   ) {}
 
-  @Mutation((returns) => PostEntity)
+  @Mutation((returns) => PostEntity, {
+    description: '게시글 등록',
+  })
   @UseGuards(JwtAuthGuard)
   async createPost(@Args('data') data: PostCreateInput): Promise<PostEntity> {
     return await this.postService.createPost(data);
   }
 
-  @Mutation((returns) => PostEntity)
+  @Mutation((returns) => PostEntity, {
+    description: '게시글 수정',
+  })
   @UseGuards(JwtAuthGuard)
   async updatePost(
-    @Args('id') id: number,
+    @Args('id', { type: () => Int }) id: number,
     @Args('data') data: PostUpdateInput,
   ): Promise<PostEntity> {
     return await this.postService.updatePost(id, data);
   }
 
-  @Mutation((returns) => PostEntity)
+  @Mutation((returns) => PostEntity, {
+    description: '게시글 삭제',
+  })
   @UseGuards(JwtAuthGuard)
-  async deletePost(@Args('id') id: number): Promise<PostEntity> {
+  async deletePost(
+    @Args('id', { type: () => Int }) id: number,
+  ): Promise<PostEntity> {
     return await this.postService.deletePost(id);
   }
 
-  @Query((returns) => [PostEntity])
+  @Query((returns) => [PostEntity], {
+    description: '게시글 전체 조회',
+  })
   @UseGuards(JwtAuthGuard)
   async allPosts() {
     return await this.postService.findAllPosts();
   }
 
-  @Query((returns) => PostEntity, { nullable: true })
-  async post(@Args('id') id: number) {
+  @Query((returns) => PostEntity, {
+    description: '게시글 단건 조회',
+    nullable: true,
+  })
+  async post(@Args('id', { type: () => Int }) id: number) {
     return await this.postService.findPostById(id);
   }
 
   @ResolveField()
-  async user(@Root() post: PostEntity): Promise<UserEntity> {
+  async user(@Parent() post: PostEntity): Promise<UserEntity> {
     return await this.userService.findUserByPostId(post.id);
   }
 }

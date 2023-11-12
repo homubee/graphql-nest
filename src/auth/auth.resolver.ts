@@ -9,7 +9,9 @@ import { LocalAuthGuard } from './guards/local-auth.guard';
 export class AuthResolver {
   constructor(private readonly authService: AuthService) {}
 
-  @Mutation((returns) => Token)
+  @Mutation((returns) => Token, {
+    description: '로그인',
+  })
   @UseGuards(LocalAuthGuard)
   async signin(@Args('data') data: SignInInput, @Context() ctx): Promise<any> {
     const { access_token, refresh_token } = await this.authService.signin(data);
